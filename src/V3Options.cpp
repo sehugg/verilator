@@ -1440,7 +1440,6 @@ void V3Options::parseOptsList(FileLine* fl, const string& optdir, int argc, char
     DECL_OPTION("-xml-only", OnOff, &m_xmlOnly);
     DECL_OPTION("-xml-output", CbVal, [this](const char* valp) {
         m_xmlOutput = valp;
-        m_xmlOnly = true;
     });
 
     DECL_OPTION("-y", CbVal, [this, &optdir](const char* valp) {

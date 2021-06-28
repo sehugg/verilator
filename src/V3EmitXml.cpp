@@ -112,12 +112,30 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         putsQuoted(nodep->origName());
         outputChildrenEnd(nodep, "instance");
     }
+    virtual void visit(AstNodeIf* nodep) override {
+        outputTag(nodep, "if");  // IEEE: vpiContAssign
+        puts(">\n");
+        iterate(nodep->op1p());
+        puts("<begin>\n");
+        iterate(nodep->op2p());
+        puts("</begin>\n");
+        if (nodep->op3p()) {
+            puts("<begin>\n");
+            iterate(nodep->op3p());
+            puts("</begin>\n");
+        }
+        puts("</if>\n");
+    }
     virtual void visit(AstNetlist* nodep) override {
         puts("<netlist>\n");
         iterateChildren(nodep);
         puts("</netlist>\n");
     }
-    virtual void visit(AstConstPool*) override {}
+    virtual void visit(AstConstPool* nodep) override {
+        puts("<constpool>\n");
+        iterateChildren(nodep);
+        puts("</constpool>\n");
+    }
     virtual void visit(AstNodeModule* nodep) override {
         outputTag(nodep, "");
         puts(" origName=");
@@ -241,7 +259,15 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         putsQuoted(cvtToStr(nodep->lhsp()->widthMinV()));
         outputChildrenEnd(nodep, "");
     }
-
+    
+    // CCall
+    virtual void visit(AstNodeCCall* nodep) override {
+        outputTag(nodep, "");
+        puts(" func=");
+        putsQuoted(nodep->funcp()->name());
+        outputChildrenEnd(nodep, "");
+    }
+    
     // Default
     virtual void visit(AstNode* nodep) override {
         outputTag(nodep, "");
