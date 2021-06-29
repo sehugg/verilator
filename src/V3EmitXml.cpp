@@ -137,6 +137,7 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         puts("</constpool>\n");
     }
     virtual void visit(AstInitArray* nodep) override {
+        puts("<initarray>\n");
         const AstInitArray::KeyItemMap& map = nodep->map();
         for (AstInitArray::KeyItemMap::const_iterator it = map.begin(); it != map.end(); ++it) {
             puts("<inititem index=\"");
@@ -145,6 +146,7 @@ class EmitXmlFileVisitor final : public AstNVisitor {
             iterateChildren(it->second);
             puts("</inititem>\n");
         }
+        puts("</initarray>\n");
     }
     virtual void visit(AstNodeModule* nodep) override {
         outputTag(nodep, "");
