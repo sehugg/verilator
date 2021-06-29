@@ -115,13 +115,13 @@ class EmitXmlFileVisitor final : public AstNVisitor {
     virtual void visit(AstNodeIf* nodep) override {
         outputTag(nodep, "if");  // IEEE: vpiContAssign
         puts(">\n");
-        iterate(nodep->op1p());
+        iterateAndNextNull(nodep->op1p());
         puts("<begin>\n");
-        iterate(nodep->op2p());
+        iterateAndNextNull(nodep->op2p());
         puts("</begin>\n");
         if (nodep->op3p()) {
             puts("<begin>\n");
-            iterate(nodep->op3p());
+            iterateAndNextNull(nodep->op3p());
             puts("</begin>\n");
         }
         puts("</if>\n");
