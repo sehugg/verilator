@@ -136,6 +136,16 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         iterateChildren(nodep);
         puts("</constpool>\n");
     }
+    virtual void visit(AstInitArray* nodep) override {
+        const AstInitArray::KeyItemMap& map = nodep->map();
+        for (AstInitArray::KeyItemMap::const_iterator it = map.begin(); it != map.end(); ++it) {
+            puts("<inititem index=\"");
+            puts(cvtToStr(it->first));
+            puts("\">\n");
+            iterateChildren(it->second);
+            puts("</inititem>\n");
+        }
+    }
     virtual void visit(AstNodeModule* nodep) override {
         outputTag(nodep, "");
         puts(" origName=");
@@ -344,7 +354,9 @@ private:
     VL_DEBUG_FUNC;  // Declare debug()
 
     // VISITORS
-    virtual void visit(AstConstPool*) override {}
+    virtual void visit(AstConstPool*) override {
+    }
+    
     virtual void visit(AstNodeModule* nodep) override {
         if (nodep->level() >= 0
             && nodep->level() <= 2) {  // ==2 because we don't add wrapper when in XML mode
