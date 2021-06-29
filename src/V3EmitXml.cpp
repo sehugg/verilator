@@ -145,7 +145,7 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         }
         if (nodep->op4p()) {
             puts("<begin>\n");
-            iterateAndNextNull(nodep->op3p());
+            iterateAndNextNull(nodep->op4p());
             puts("</begin>\n");
         }
         puts("</while>\n");
