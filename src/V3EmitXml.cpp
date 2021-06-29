@@ -112,10 +112,11 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         putsQuoted(nodep->origName());
         outputChildrenEnd(nodep, "instance");
     }
+    // TODO: AstWhile, others?
     virtual void visit(AstNodeIf* nodep) override {
-        outputTag(nodep, "if");  // IEEE: vpiContAssign
+        outputTag(nodep, "if");
         puts(">\n");
-        iterateAndNextNull(nodep->op1p());
+        iterateAndNextNull(nodep->op1p()); // TODO: do we need <begin>?
         puts("<begin>\n");
         iterateAndNextNull(nodep->op2p());
         puts("</begin>\n");
@@ -125,6 +126,29 @@ class EmitXmlFileVisitor final : public AstNVisitor {
             puts("</begin>\n");
         }
         puts("</if>\n");
+    }
+    virtual void visit(AstWhile* nodep) override {
+        outputTag(nodep, "while");
+        puts(">\n");
+        puts("<begin>\n");
+        iterateAndNextNull(nodep->op1p());
+        puts("</begin>\n");
+        if (nodep->op2p()) {
+            puts("<begin>\n");
+            iterateAndNextNull(nodep->op2p());
+            puts("</begin>\n");
+        }
+        if (nodep->op3p()) {
+            puts("<begin>\n");
+            iterateAndNextNull(nodep->op3p());
+            puts("</begin>\n");
+        }
+        if (nodep->op4p()) {
+            puts("<begin>\n");
+            iterateAndNextNull(nodep->op3p());
+            puts("</begin>\n");
+        }
+        puts("</while>\n");
     }
     virtual void visit(AstNetlist* nodep) override {
         puts("<netlist>\n");
