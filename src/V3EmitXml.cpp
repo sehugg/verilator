@@ -112,11 +112,10 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         putsQuoted(nodep->origName());
         outputChildrenEnd(nodep, "instance");
     }
-    // TODO: AstWhile, others?
     virtual void visit(AstNodeIf* nodep) override {
         outputTag(nodep, "if");
         puts(">\n");
-        iterateAndNextNull(nodep->op1p()); // TODO: do we need <begin>?
+        iterateAndNextNull(nodep->op1p());
         puts("<begin>\n");
         iterateAndNextNull(nodep->op2p());
         puts("</begin>\n");
@@ -295,7 +294,7 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         putsQuoted(cvtToStr(nodep->lhsp()->widthMinV()));
         outputChildrenEnd(nodep, "");
     }
-    
+
     // CCall
     virtual void visit(AstNodeCCall* nodep) override {
         outputTag(nodep, "");
@@ -303,7 +302,7 @@ class EmitXmlFileVisitor final : public AstNVisitor {
         putsQuoted(nodep->funcp()->name());
         outputChildrenEnd(nodep, "");
     }
-    
+
     // Default
     virtual void visit(AstNode* nodep) override {
         outputTag(nodep, "");
@@ -380,9 +379,8 @@ private:
     VL_DEBUG_FUNC;  // Declare debug()
 
     // VISITORS
-    virtual void visit(AstConstPool*) override {
-    }
-    
+    virtual void visit(AstConstPool*) override {}
+
     virtual void visit(AstNodeModule* nodep) override {
         if (nodep->level() >= 0
             && nodep->level() <= 2) {  // ==2 because we don't add wrapper when in XML mode
